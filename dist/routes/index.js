@@ -20,6 +20,10 @@ var _db = require('../db');
 
 var _db2 = _interopRequireDefault(_db);
 
+var _restaurant = require('../controller/restaurant');
+
+var _restaurant2 = _interopRequireDefault(_restaurant);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = (0, _express2.default)();
@@ -30,6 +34,7 @@ var router = (0, _express2.default)();
   router.use((0, _middleware2.default)({ config: _config2.default, db: db }));
 
   //api routes v1
+  router.use('/restaurant', (0, _restaurant2.default)({ config: _config2.default, db: db }));
 });
 
 exports.default = router;

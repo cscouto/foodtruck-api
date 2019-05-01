@@ -34,7 +34,10 @@ var app = (0, _express2.default)();
 app.server = _http2.default.createServer(app);
 
 //middleware
-
+//parse application/json
+app.use(_bodyParser2.default.json({
+  limit: _config2.default.bodyLimit
+}));
 //passport config
 
 //api routes v1
