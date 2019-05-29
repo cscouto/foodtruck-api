@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Router } from 'express';
 import Restaurant from '../model/restaurant';
+import Review from '../model/review';
 
 export default({ config, db }) => {
   let api = Router();
@@ -9,6 +10,9 @@ export default({ config, db }) => {
   api.post('/add', (req, res) => {
     let newRest = new Restaurant();
     newRest.name = req.body.name;
+    newRest.foodType = req.body.foodType;
+    newRest.avgCost = req.body.avgCost;
+    newRest.geometry = req.body.geometry;
 
     newRest.save(err => {
       if (err) {
@@ -63,6 +67,31 @@ export default({ config, db }) => {
         res.send(err);
       }
       res.json({ message: "Restaurant successfully removed."});
+    });
+  });
+
+  //add review for a specific food foodtruck
+  api.post('/reviews/add/:id', (req, res) => {
+    Restaurant.findById(req.params.id, (err, restaurant) => {
+      if (err) {
+        res.send(err);
+      }
+      let newReview = new Review();
+      newReview.title = req.body.title;
+      newReview.text = req.body.text;
+      newReview.restaurant = restaurant._id;
+      newReview.save((err, review) => {
+        if (err) {
+          res.send(err);
+        }
+        restaurant.reviews.push(newReview);
+        restaurant.save(err => {
+          if (err) {
+            res.send(err);
+          }
+          res.json({ message: "Review added to the restaurant."});
+        });
+      });
     });
   });
 
