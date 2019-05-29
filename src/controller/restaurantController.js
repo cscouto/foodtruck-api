@@ -3,11 +3,13 @@ import { Router } from 'express';
 import Restaurant from '../model/restaurant';
 import Review from '../model/review';
 
+import { authenticate } from '../middleware/authMiddleware';
+
 export default({ config, db }) => {
   let api = Router();
 
   //Create
-  api.post('/add', (req, res) => {
+  api.post('/add', authenticate, (req, res) => {
     let newRest = new Restaurant();
     newRest.name = req.body.name;
     newRest.foodType = req.body.foodType;
