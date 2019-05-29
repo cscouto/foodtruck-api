@@ -49,6 +49,9 @@ export default({ config, db }) => {
         res.send(err);
       }
       restaurant.name = req.body.name;
+      restaurant.foodType = req.body.foodType;
+      restaurant.avgCost = req.body.avgCost;
+      restaurant.geometry = req.body.geometry;
       restaurant.save(err => {
         if (err) {
           res.send(err);
@@ -93,6 +96,16 @@ export default({ config, db }) => {
         });
       });
     });
+  });
+
+  //get reviews for a specific foodtruck
+  api.get('/reviews/:id', (req, res) => {
+    Review.find({restaurant: req.params.id}, (err, reviews) => {
+      if (err) {
+        res.send(err);
+      }
+      res.json(reviews);
+    })
   });
 
   return api;
